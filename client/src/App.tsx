@@ -8,8 +8,8 @@ import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./actions/auth";
 
 import Navbar from "./components/Navbar";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/authentification/Login";
+import Register from "./components/authentification/Register";
 
 import "./index.css";
 
