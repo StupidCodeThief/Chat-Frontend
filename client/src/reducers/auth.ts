@@ -1,18 +1,21 @@
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAILURE,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  LOG_OUT,
-  AUTH_ERROR,
-  USER_LOADED,
-} from "../actions/types";
+import { types } from "../actions/types";
+
+interface IUser {
+  id: number;
+  username: string;
+  email: string;
+}
 
 interface InitialState {
-  token: string | any;
+  token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
-  user: null | any;
+  user: null | IUser;
+}
+
+interface IActon {
+  type: string;
+  data: string | IUser;
 }
 
 const initialState: InitialState = {
@@ -22,23 +25,18 @@ const initialState: InitialState = {
   user: null,
 };
 
-export default function (state = initialState, action: any): any {
-  const { payload, type } = action;
-  switch (type) {
-    case REGISTER_SUCCESS:
-    case LOGIN_SUCCESS:
-      localStorage.setItem("token", payload.token);
+export default function (state = initialState, action: IActon): any {
+  switch (action.type) {
+    case types.REGISTER_SUCCESS:
+    case types.LOGIN_SUCCESS:
       return {
         ...state,
+        token: action.data,
         isAuthenticated: true,
         loading: false,
       };
-
-    case REGISTER_FAILURE:
-    case LOGIN_FAILURE:
-    case LOG_OUT:
-    case AUTH_ERROR:
-      localStorage.removeItem("token");
+    case types.LOG_OUT:
+    case types.AUTH_ERROR:
       return {
         ...state,
         token: null,
@@ -46,13 +44,12 @@ export default function (state = initialState, action: any): any {
         loading: false,
         user: null,
       };
-    case USER_LOADED:
+    case types.USER_LOADED:
       return {
         ...state,
-        token: localStorage.getItem("token"),
         isAuthenticated: true,
         loading: false,
-        user: payload,
+        user: action.data,
       };
     default:
       return {

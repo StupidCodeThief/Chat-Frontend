@@ -8,7 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import { logout } from "../actions/auth";
+import { logout } from "../actions/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,13 +50,15 @@ const Navbar: React.FC = () => {
                   Connect to room
                 </Button>
               </Link>
-              <Button
-                variant="contained"
-                className={"button-margins"}
-                onClick={onClick}
-              >
-                Logout
-              </Button>
+              <Link to="/">
+                <Button
+                  variant="contained"
+                  className={"button-margins"}
+                  onClick={onClick}
+                >
+                  Logout
+                </Button>
+              </Link>
             </>
           ) : (
             <Link to="/login">

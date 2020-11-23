@@ -1,10 +1,11 @@
-export const LOGIN_SUCCESS: string = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE: string = "LOGIN_FAILURE";
+interface ITypes {
+  [key: string]: string;
+}
 
-export const REGISTER_SUCCESS: string = "REGISTER_SUCCESS";
-export const REGISTER_FAILURE: string = "REGISTER_FAILURE";
-
-export const USER_LOADED: string = "USER_LOADED";
-export const AUTH_ERROR: string = "AUTH_ERROR";
-
-export const LOG_OUT: string = "LOG_OUT";
+export const types: ITypes = {
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  REGISTER_SUCCESS: "REGISTER_SUCCESS",
+  USER_LOADED: "USER_LOADED",
+  AUTH_ERROR: "AUTH_ERROR",
+  LOG_OUT: "LOG_OUT",
+};
