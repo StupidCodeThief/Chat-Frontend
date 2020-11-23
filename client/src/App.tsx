@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
-import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./actions/auth";
 
 import Navbar from "./components/Navbar";

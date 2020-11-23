@@ -15,7 +15,7 @@ const config = {
   },
 };
 
-export const loadUser = () => async (dispatch: any) => {
+export const loadUser = () => async (dispatch: any): Promise<void> => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
