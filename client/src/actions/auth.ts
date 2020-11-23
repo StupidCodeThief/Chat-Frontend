@@ -71,3 +71,36 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
     });
   }
 };
+
+export const register = ({ email, password, username }: any) => async (
+  dispatch: any
+) => {
+  const body = JSON.stringify({ email, password, username });
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/auth/register",
+      body,
+      config
+    );
+
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: res.data,
+    });
+
+    // dispatch(loadUser());
+  } catch (error) {
+    const errors = error.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error: any) => {
+        console.error(error);
+      });
+    }
+
+    dispatch({
+      type: REGISTER_FAILURE,
+    });
+  }
+};
