@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+
+import { logout } from "../actions/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,10 +24,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const isAuthenticated = useSelector(
     (state: RootStateOrAny) => state.auth.isAuthenticated
   );
+
+  const onClick = (): void => {
+    dispatch(logout());
+  };
 
   return (
     <div className={classes.root}>
@@ -36,12 +44,29 @@ const Navbar: React.FC = () => {
             </Link>
           </Typography>
           {isAuthenticated ? (
-            <Link to="/">
-              <span className={"nav-link"}>Connect to room</span>
-            </Link>
+            <>
+              <Link to="/">
+                <Button variant="contained" className={"button-margins"}>
+                  Connect to room
+                </Button>
+              </Link>
+              <Button
+                variant="contained"
+                className={"button-margins"}
+                onClick={onClick}
+              >
+                Logout
+              </Button>
+            </>
           ) : (
             <Link to="/login">
-              <span className={"nav-link"}>Login</span>
+              <Button
+                variant="contained"
+                color="primary"
+                className={"button-margins"}
+              >
+                Login
+              </Button>
             </Link>
           )}
         </Toolbar>

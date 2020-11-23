@@ -5,6 +5,9 @@ import {
   REGISTER_FAILURE,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  LOG_OUT,
+  AUTH_ERROR,
+  USER_LOADED
 } from "./types";
 
 import setAuthToken from "../utils/setAuthToken";
@@ -21,15 +24,14 @@ export const loadUser = () => async (dispatch: any): Promise<void> => {
   }
 
   try {
-    // mock reqest to get user
-    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:5000/api/auth/user");
 
-    if (token) {
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: { token },
-      });
-    }
+    console.log(res.data)
+
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -38,6 +40,10 @@ export const loadUser = () => async (dispatch: any): Promise<void> => {
         console.error(error);
       });
     }
+
+    dispatch({
+      type: AUTH_ERROR,
+    });
   }
 };
 
@@ -56,7 +62,7 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
       payload: res.data,
     });
 
-    // dispatch(loadUser());
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -89,7 +95,7 @@ export const register = ({ email, password, username }: any) => async (
       payload: res.data,
     });
 
-    // dispatch(loadUser());
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -101,6 +107,26 @@ export const register = ({ email, password, username }: any) => async (
 
     dispatch({
       type: REGISTER_FAILURE,
+    });
+  }
+};
+
+export const logout = () => async (dispatch: any) => {
+  try {
+    dispatch({
+      type: LOG_OUT,
+    });
+  } catch (error) {
+    const errors = error.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error: any) => {
+        console.error(error);
+      });
+    }
+
+    dispatch({
+      type: AUTH_ERROR,
     });
   }
 };

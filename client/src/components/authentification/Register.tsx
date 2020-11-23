@@ -47,8 +47,7 @@ const Register: React.FC = () => {
         confirmPassword: "",
         username: "",
       });
-    console.log(registerData);
-    // dispatch(register(registerData));
+    dispatch(register(registerData));
   };
 
   if (isAuthenticated) {

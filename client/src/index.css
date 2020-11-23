@@ -43,3 +43,7 @@ a {
   align-items: center;
   margin: 0 auto;
 }
+
+header .button-margins {
+  margin-left: 10px;
+}

@@ -3,6 +3,9 @@ import {
   REGISTER_FAILURE,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  LOG_OUT,
+  AUTH_ERROR,
+  USER_LOADED,
 } from "../actions/types";
 
 interface InitialState {
@@ -33,6 +36,8 @@ export default function (state = initialState, action: any): any {
 
     case REGISTER_FAILURE:
     case LOGIN_FAILURE:
+    case LOG_OUT:
+    case AUTH_ERROR:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -40,6 +45,14 @@ export default function (state = initialState, action: any): any {
         isAuthenticated: false,
         loading: false,
         user: null,
+      };
+    case USER_LOADED:
+      return {
+        ...state,
+        token: localStorage.getItem("token"),
+        isAuthenticated: true,
+        loading: false,
+        user: payload,
       };
     default:
       return {
