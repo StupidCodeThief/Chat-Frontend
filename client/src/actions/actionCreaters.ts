@@ -1,43 +1,62 @@
 import { types } from "./types";
 
-interface IUser {
-  id: number;
-  username: string;
-  email: string;
-}
+import {IUser, CreatorReturn} from "../helpers/interfaces"
 
-interface CreaterReturn {
-  type: string;
-  data?: string | IUser;
-}
-
-function loginSuccess(data: string | IUser): CreaterReturn {
+function loginSuccess(token: string): CreatorReturn {
   return {
     type: types.LOGIN_SUCCESS,
-    data,
+    payload: {
+      token: token,
+      isAuthenticated: true,
+      loading: false,
+    },
   };
 }
 
-function loadUserSuccess(data: string | IUser): CreaterReturn {
+function loadUserSuccess(user: IUser): CreatorReturn {
   return {
     type: types.USER_LOADED,
-    data,
+    payload: {
+      isAuthenticated: true,
+      loading: false,
+      user: user,
+    },
   };
 }
 
-function authError(): CreaterReturn {
-  return { type: types.AUTH_ERROR };
+function authError(): CreatorReturn {
+  return {
+    type: types.AUTH_ERROR,
+    payload: {
+      token: null,
+      isAuthenticated: false,
+      loading: false,
+      user: null,
+    },
+  };
 }
 
-function registerSuccess(data: string | IUser): CreaterReturn {
+function registerSuccess(token: string): CreatorReturn {
   return {
     type: types.REGISTER_SUCCESS,
-    data,
+    payload: {
+      token: token,
+      isAuthenticated: true,
+      loading: false,
+    },
   };
 }
 
-function logoutSuccess(): CreaterReturn {
-  return { type: types.LOG_OUT };
+function logoutSuccess(): CreatorReturn {
+  return {
+    type: types.LOG_OUT,
+    payload: {
+      token: null,
+      isAuthenticated: false,
+      loading: false,
+      user: null,
+    },
+  };
 }
 
 export default {

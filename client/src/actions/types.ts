@@ -1,6 +1,4 @@
-interface ITypes {
-  [key: string]: string;
-}
+import { ITypes } from "../helpers/interfaces";
 
 export const types: ITypes = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",

@@ -14,7 +14,9 @@ import "./index.css";
 
 const App: React.FC = () => {
   useEffect(() => {
-    store.dispatch(loadUser());
+    if (localStorage.getItem("token")) {
+      // store.dispatch(loadUser());
+    }
   }, []);
 
   return (

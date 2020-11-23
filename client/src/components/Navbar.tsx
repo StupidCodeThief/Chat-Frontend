@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 
 import { logout } from "../actions/actions";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
