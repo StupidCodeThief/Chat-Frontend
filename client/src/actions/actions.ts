@@ -40,7 +40,6 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
     localStorage.setItem("token", res.data.token);
 
     dispatch(actionCreators.loginSuccess(res.data.token));
-    console.log(res.data);
 
     dispatch(loadUser());
   } catch (error) {

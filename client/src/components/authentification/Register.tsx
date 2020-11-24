@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import { register } from "../../actions/actions";
+
+import { getIsAuthenticated } from "../../selectors/authSelectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,9 +23,7 @@ const Register: React.FC = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const isAuthenticated = useSelector(
-    (state: RootStateOrAny) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector(getIsAuthenticated());
 
   const [registerData, setRegisterData] = useState({
     email: "",

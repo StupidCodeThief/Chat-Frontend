@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import { logout } from "../actions/actions";
-
+import { getIsAuthenticated } from "../selectors/authSelectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,9 +27,7 @@ const Navbar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(
-    (state: RootStateOrAny) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector(getIsAuthenticated());
 
   const onClick = (): void => {
     dispatch(logout());
