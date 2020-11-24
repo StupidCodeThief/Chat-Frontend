@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import actionCreaters from "./actionCreaters";
+import actionCreaters from "./actionCreators";
 
 import setAuthToken from "../utils/setAuthToken";
 import setAxiosHeders from "../services/axiosHTTP";
