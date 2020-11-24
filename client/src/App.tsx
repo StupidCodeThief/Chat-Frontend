@@ -4,11 +4,10 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
-import { loadUser } from "./actions/actions";
-
 import Navbar from "./components/Navbar";
 import Login from "./components/authentification/Login";
 import Register from "./components/authentification/Register";
+import Dashboard from "./components/Dashboard";
 
 import "./index.css";
 
@@ -25,7 +24,7 @@ const App: React.FC = () => {
         <Navbar />
         <Switch>
           <Route exact path="/">
-            <h1>Main page</h1>
+            <Dashboard />
           </Route>
           <Route exact path="/login">
             <Login />

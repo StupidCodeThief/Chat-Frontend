@@ -5,9 +5,14 @@ import actionCreators from "./actionCreators";
 import setAuthToken from "../utils/setAuthToken";
 import setAxiosHeders from "../services/axiosHTTP";
 
+import { ILogin, IRegister, CreatorReturn } from "../helpers/interfaces";
+import { Dispatch } from "react";
+
 setAxiosHeders();
 
-export const loadUser = () => async (dispatch: any): Promise<void> => {
+export const loadUser = () => async (
+  dispatch: Dispatch<CreatorReturn>
+): Promise<void> => {
   if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
@@ -31,7 +36,9 @@ export const loadUser = () => async (dispatch: any): Promise<void> => {
   }
 };
 
-export const login = ({ email, password }: any) => async (dispatch: any) => {
+export const login = ({ email, password }: ILogin) => async (
+  dispatch: Dispatch<CreatorReturn>
+) => {
   const body = JSON.stringify({ email, password });
 
   try {
@@ -40,8 +47,6 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
     localStorage.setItem("token", res.data.token);
 
     dispatch(actionCreators.loginSuccess(res.data.token));
-
-    dispatch(loadUser());
   } catch (error) {
     const errors: [] = error.response?.data?.errors || [
       { message: "Server error" },
@@ -59,8 +64,8 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
   }
 };
 
-export const register = ({ email, password, username }: any) => async (
-  dispatch: any
+export const register = ({ email, password, username }: IRegister) => async (
+  dispatch: Dispatch<CreatorReturn>
 ) => {
   const body = JSON.stringify({ email, password, username });
 
@@ -70,8 +75,6 @@ export const register = ({ email, password, username }: any) => async (
     localStorage.setItem("token", res.data.token);
 
     dispatch(actionCreators.registerSuccess(res.data.token));
-
-    dispatch(loadUser());
   } catch (error) {
     const errors: [] = error.response?.data?.errors || [
       { message: "Server error" },
@@ -89,7 +92,7 @@ export const register = ({ email, password, username }: any) => async (
   }
 };
 
-export const logout = () => async (dispatch: any) => {
+export const logout = () => async (dispatch: Dispatch<CreatorReturn>) => {
   try {
     localStorage.removeItem("token");
 

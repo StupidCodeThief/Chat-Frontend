@@ -3,13 +3,13 @@ import { types } from "../actions/types";
 import { CreatorReturn, InitialState } from "../helpers/interfaces";
 
 const initialState: InitialState = {
-  token: localStorage.getItem("token"),
+  token: null,
   isAuthenticated: false,
   loading: true,
   user: null,
 };
 
-export default function (state = initialState, action: CreatorReturn ): any {
+export default function (state = initialState, action: CreatorReturn ): InitialState {
   switch (action.type) {
     case types.REGISTER_SUCCESS:
     case types.LOGIN_SUCCESS:
