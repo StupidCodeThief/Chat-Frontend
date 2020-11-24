@@ -63,7 +63,6 @@ const Navbar: React.FC = () => {
             <Link to="/login">
               <Button
                 variant="contained"
-                color="primary"
                 className={"button-margins"}
               >
                 Login
