@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import actionCreaters from "./actionCreators";
+import actionCreators from "./actionCreators";
 
 import setAuthToken from "../utils/setAuthToken";
 import setAxiosHeders from "../services/axiosHTTP";
@@ -15,7 +15,7 @@ export const loadUser = () => async (dispatch: any): Promise<void> => {
   try {
     const res = await axios.get("/api/auth/user");
 
-    dispatch(actionCreaters.loadUserSuccess(res.data));
+    dispatch(actionCreators.loadUserSuccess(res.data));
   } catch (error) {
     const errors: [] = error.response?.data?.errors || [
       { message: "Server error" },
@@ -27,7 +27,7 @@ export const loadUser = () => async (dispatch: any): Promise<void> => {
       });
     }
 
-    dispatch(actionCreaters.authError());
+    dispatch(actionCreators.authError());
   }
 };
 
@@ -39,7 +39,7 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
 
     localStorage.setItem("token", res.data.token);
 
-    dispatch(actionCreaters.loginSuccess(res.data.token));
+    dispatch(actionCreators.loginSuccess(res.data.token));
     console.log(res.data);
 
     dispatch(loadUser());
@@ -56,7 +56,7 @@ export const login = ({ email, password }: any) => async (dispatch: any) => {
 
     localStorage.removeItem("token");
 
-    dispatch(actionCreaters.authError());
+    dispatch(actionCreators.authError());
   }
 };
 
@@ -70,7 +70,7 @@ export const register = ({ email, password, username }: any) => async (
 
     localStorage.setItem("token", res.data.token);
 
-    dispatch(actionCreaters.registerSuccess(res.data.token));
+    dispatch(actionCreators.registerSuccess(res.data.token));
 
     dispatch(loadUser());
   } catch (error) {
@@ -86,7 +86,7 @@ export const register = ({ email, password, username }: any) => async (
 
     localStorage.removeItem("token");
 
-    dispatch(actionCreaters.authError());
+    dispatch(actionCreators.authError());
   }
 };
 
@@ -94,7 +94,7 @@ export const logout = () => async (dispatch: any) => {
   try {
     localStorage.removeItem("token");
 
-    dispatch(actionCreaters.logoutSuccess());
+    dispatch(actionCreators.logoutSuccess());
   } catch (error) {
     const errors: [] = error.response?.data?.errors || [
       { message: "Server error" },
@@ -107,6 +107,6 @@ export const logout = () => async (dispatch: any) => {
     }
     localStorage.removeItem("token");
 
-    dispatch(actionCreaters.authError());
+    dispatch(actionCreators.authError());
   }
 };
