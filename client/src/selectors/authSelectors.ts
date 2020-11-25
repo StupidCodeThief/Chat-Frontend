@@ -7,3 +7,7 @@ export const getIsAuthenticated = () => {
 export const getUserName = () => {
   return (state: RootStateOrAny) => state.auth.user.username;
 };
+
+export const getUser = () => {
+  return (state: RootStateOrAny) => state.auth.user;
+};

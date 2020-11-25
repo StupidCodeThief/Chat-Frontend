@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 
 import socket from "../../utils/connectSocket";
 import ConnectRoom from "./ConnectRoom";
-import {getUserName} from "../../selectors/authSelectors"
+import { getUser } from "../../selectors/authSelectors";
 
 interface IMessage {
   user: string;
@@ -16,7 +16,7 @@ interface IMessage {
 const Chatroom: React.FC = () => {
   const [messages, setMessages] = useState<Array<IMessage>>([]);
   const [userInput, setUserInput] = useState<string>("");
-  const user = useSelector(getUserName())
+  const user = useSelector(getUser());
 
   useEffect(() => {
     return () => {
@@ -28,6 +28,13 @@ const Chatroom: React.FC = () => {
     setMessages([{ user: data.user, text: data.text }, ...messages]);
   });
 
+  socket.on("SET:MSG", (msg: any) => {
+    console.log(msg);
+    msg.forEach((message: any) => {
+      setMessages([...messages, { user: msg.user, text: msg.message }]);
+    });
+  });
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
@@ -35,7 +42,7 @@ const Chatroom: React.FC = () => {
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (userInput) {
-      setMessages([{ user, text: userInput }, ...messages]);
+      setMessages([{ user: user.username, text: userInput }, ...messages]);
       socket.emit("message", userInput);
       setUserInput("");
     }
@@ -43,14 +50,14 @@ const Chatroom: React.FC = () => {
 
   return (
     <section className={"chat-container"}>
-      <ConnectRoom />
+      <ConnectRoom socket={socket} user={user} />
       <div className={"chat"}>
         <div className={"message-container"}>
           {messages.length
-            ? messages.map((message) => {
+            ? messages.map((message, index) => {
                 return (
                   <>
-                    {user === message.user ? (
+                    {user.username === message.user ? (
                       <span className={"message"}>
                         {message.user}: {message.text}
                       </span>

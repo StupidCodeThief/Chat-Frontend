@@ -35,3 +35,8 @@ export interface InitialState {
 export interface ITypes {
   [key: string]: string;
 }
+
+export interface ConnectRoomProps {
+  socket: SocketIOClient.Socket;
+  user: IUser
+}
