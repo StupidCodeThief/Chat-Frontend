@@ -9,8 +9,9 @@ import ConnectRoom from "./ConnectRoom";
 import { getUser } from "../../selectors/authSelectors";
 
 interface IMessage {
-  user: string;
+  user: string | undefined;
   text: string;
+  username?: string;
 }
 
 const Chatroom: React.FC = () => {
@@ -28,11 +29,9 @@ const Chatroom: React.FC = () => {
     setMessages([{ user: data.user, text: data.text }, ...messages]);
   });
 
-  socket.on("SET:MSG", (msg: any) => {
-    console.log(msg);
-    msg.forEach((message: any) => {
-      setMessages([...messages, { user: msg.user, text: msg.message }]);
-    });
+  socket.on("PREW:MSG", (prewMessage: any) => {
+    console.log("get msg");
+    setMessages([...messages, ...prewMessage]);
   });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,9 +47,13 @@ const Chatroom: React.FC = () => {
     }
   };
 
+  const onExitRoom = () => {
+    setMessages([]);
+  };
+
   return (
     <section className={"chat-container"}>
-      <ConnectRoom socket={socket} user={user} />
+      <ConnectRoom socket={socket} user={user} onExitRoom={onExitRoom} />
       <div className={"chat"}>
         <div className={"message-container"}>
           {messages.length

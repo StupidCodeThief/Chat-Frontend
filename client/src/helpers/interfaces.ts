@@ -15,18 +15,8 @@ export interface IRegister {
   username: string;
 }
 
-export interface CreatorReturn {
-  type: string;
-  payload: {
-    token?: string | null | undefined | undefined;
-    isAuthenticated?: boolean | undefined | undefined;
-    loading?: boolean | undefined | undefined;
-    user?: null | IUser | undefined | undefined;
-  };
-}
-
 export interface InitialState {
-  token: string | null  | undefined;
+  token: string | null | undefined;
   isAuthenticated: boolean | undefined;
   loading: boolean | undefined;
   user: null | IUser | undefined;
@@ -38,5 +28,29 @@ export interface ITypes {
 
 export interface ConnectRoomProps {
   socket: SocketIOClient.Socket;
-  user: IUser
+  user: IUser;
+  onExitRoom: any;
+}
+
+export interface IMessage {
+  message_id: number;
+  user: number;
+  room: number;
+  text: string;
+  username: string;
+}
+
+export interface StateMessages {
+  messages: [] | [IMessage] | undefined;
+}
+
+export interface CreatorReturn {
+  type: string;
+  payload: {
+    token?: string | null | undefined;
+    isAuthenticated?: boolean | undefined;
+    loading?: boolean | undefined;
+    user?: null | IUser | undefined;
+    messages?: [] | [IMessage] | undefined;
+  };
 }

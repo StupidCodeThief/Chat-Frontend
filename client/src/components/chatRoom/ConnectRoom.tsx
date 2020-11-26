@@ -15,7 +15,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConnectRoom: React.FC<ConnectRoomProps> = ({ socket, user }) => {
+const ConnectRoom: React.FC<ConnectRoomProps> = ({
+  socket,
+  user,
+  onExitRoom,
+}) => {
   const classes = useStyles();
   const [roomData, setRoomData] = useState({
     user,
@@ -30,14 +34,15 @@ const ConnectRoom: React.FC<ConnectRoomProps> = ({ socket, user }) => {
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit("JOIN:ROOM", roomData);
-    socket.emit("UPDATE:MSG")
-    // setRoomData({ ...roomData, roomId: "", password: "" });
+    setRoomData({ ...roomData, roomId: "", password: "" });
+    console.log(roomData);
   };
 
   const onReset = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     socket.emit("EXIT:ROOM");
-    // setRoomData({ ...roomData, roomId: "", password: "" });
+    onExitRoom();
+    setRoomData({ ...roomData, roomId: "", password: "" });
   };
 
   return (
@@ -52,7 +57,7 @@ const ConnectRoom: React.FC<ConnectRoomProps> = ({ socket, user }) => {
       >
         <TextField
           id="standard-basic"
-          label="Room ID"
+          label="Room Name"
           name="roomId"
           onChange={onChange}
           value={roomData.roomId}
