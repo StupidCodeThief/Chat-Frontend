@@ -110,3 +110,10 @@ header .button-margins {
 .message-date {
   font-size: 10px;
 }
+
+@media screen and (max-width: 768px) {
+  .chat {
+    width: 96%;
+    margin-left: 0;
+  }
+}
