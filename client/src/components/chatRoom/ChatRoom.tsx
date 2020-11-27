@@ -7,15 +7,18 @@ import Button from "@material-ui/core/Button";
 import socket from "../../utils/connectSocket";
 import ConnectRoom from "./ConnectRoom";
 import { getUser } from "../../selectors/authSelectors";
+import { PrevMessage } from "../../helpers/interfaces";
 
 interface IMessage {
-  user: string | undefined;
+  user?: string | undefined;
   text: string;
   username?: string;
+  date: Date;
+  message_id?: number;
 }
 
 const Chatroom: React.FC = () => {
-  const [messages, setMessages] = useState<Array<IMessage>>([]);
+  const [messages, setMessages] = useState<Array<IMessage | PrevMessage>>([]);
   const [userInput, setUserInput] = useState<string>("");
   const user = useSelector(getUser());
 
@@ -26,14 +29,17 @@ const Chatroom: React.FC = () => {
   }, []);
 
   socket.on("message", (data: IMessage) => {
-    setMessages([{ user: data.user, text: data.text }, ...messages]);
+    console.log(data);
+    setMessages([
+      ...messages,
+      { username: data.username, text: data.text, date: new Date() },
+    ]);
   });
 
-  socket.on("PREW:MSG", (prewMessage: any) => {
-    console.log("get msg");
+  socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
     setMessages([...messages, ...prewMessage]);
   });
-
+  console.log(messages);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
@@ -41,7 +47,10 @@ const Chatroom: React.FC = () => {
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (userInput) {
-      setMessages([{ user: user.username, text: userInput }, ...messages]);
+      setMessages([
+        ...messages,
+        { username: user.username, text: userInput, date: new Date() },
+      ]);
       socket.emit("message", userInput);
       setUserInput("");
     }
@@ -57,17 +66,32 @@ const Chatroom: React.FC = () => {
       <div className={"chat"}>
         <div className={"message-container"}>
           {messages.length
-            ? messages.map((message, index) => {
+            ? messages.map((message) => {
+                const formattedDate = new Date(
+                  message.date
+                ).toLocaleString("ru-RU", { hour12: false });
                 return (
                   <>
-                    {user.username === message.user ? (
-                      <span className={"message"}>
-                        {message.user}: {message.text}
-                      </span>
+                    {user.username === message.username ? (
+                      <div
+                        className={"message"}
+                        key={message.message_id || Date.now()}
+                      >
+                        <span>
+                        <strong>{message.username}</strong>: {message.text}
+                        </span>
+                        <span className={"message-date"}>{formattedDate}</span>
+                      </div>
                     ) : (
-                      <span className={"message inbox"}>
-                        {message.text}: {message.user}
-                      </span>
+                      <div
+                        className={"message inbox"}
+                        key={message.message_id || Date.now()}
+                      >
+                        <span>
+                          {message.text}: <strong>{message.username}</strong>
+                        </span>
+                        <span className={"message-date"}>{formattedDate}</span>
+                      </div>
                     )}
                   </>
                 );

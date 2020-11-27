@@ -54,3 +54,12 @@ export interface CreatorReturn {
     messages?: [] | [IMessage] | undefined;
   };
 }
+
+export interface PrevMessage {
+  message_id: number;
+  room: number;
+  text: string;
+  user: number;
+  username: string;
+  date: Date;
+}

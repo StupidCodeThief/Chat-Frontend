@@ -53,6 +53,7 @@ header .button-margins {
 .chat-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   padding-top: 5%;
 }
 
@@ -63,7 +64,8 @@ header .button-margins {
 
 .message-container {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  justify-content: flex-end;
   width: 100%;
   border: 2px solid black;
   height: 500px;
@@ -89,7 +91,8 @@ header .button-margins {
 }
 
 .message {
-  display: block;
+  display: flex;
+  flex-direction: column;
   margin: 5px;
   padding: 10px;
   /* border: 1px solid #9aa0ff; */
@@ -101,4 +104,9 @@ header .button-margins {
 
 .inbox {
   align-self: flex-end;
+  text-align: right;
+}
+
+.message-date {
+  font-size: 10px;
 }

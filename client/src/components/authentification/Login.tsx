@@ -36,8 +36,8 @@ const Login: React.FC = () => {
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    setLoginData({ email: "", password: "" });
     dispatch(login(loginData));
+    setLoginData({ email: "", password: "" });
   };
 
   if (isAuthenticated) {
