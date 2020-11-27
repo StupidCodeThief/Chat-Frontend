@@ -33,15 +33,15 @@ const ConnectRoom: React.FC<ConnectRoomProps> = ({
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    onExitRoom();
     socket.emit("JOIN:ROOM", roomData);
     setRoomData({ ...roomData, roomId: "", password: "" });
-    console.log(roomData);
   };
 
   const onReset = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("EXIT:ROOM");
     onExitRoom();
+    socket.emit("EXIT:ROOM");
     setRoomData({ ...roomData, roomId: "", password: "" });
   };
 

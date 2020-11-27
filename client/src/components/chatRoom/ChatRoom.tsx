@@ -29,7 +29,6 @@ const Chatroom: React.FC = () => {
   }, []);
 
   socket.on("message", (data: IMessage) => {
-    console.log(data);
     setMessages([
       ...messages,
       { username: data.username, text: data.text, date: new Date() },
@@ -39,7 +38,6 @@ const Chatroom: React.FC = () => {
   socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
     setMessages([...messages, ...prewMessage]);
   });
-  console.log(messages);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };

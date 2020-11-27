@@ -1,5 +1,4 @@
 {
-  "proxy": "http://localhost:5000",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -163,5 +162,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "proxy": "https://chat-cocket.herokuapp.com"
 }
