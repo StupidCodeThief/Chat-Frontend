@@ -1,16 +1,16 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://chat-cocket.herokuapp.com/",
+  baseURL: "https://chat-cocket.herokuapp.com",
 });
 
 instance.defaults.headers["Content-Type"] = "application/json";
 
 if (localStorage.token) {
-  axios.defaults.headers.common["auth-token"] = localStorage.token;
-  console.log(axios.defaults.headers);
+  instance.defaults.headers["auth-token"] = localStorage.token;
 } else {
-  delete axios.defaults.headers.common["auth-token"];
+  delete instance.defaults.headers["auth-token"];
 }
 
+console.log(instance.defaults.headers)
 export default instance;
