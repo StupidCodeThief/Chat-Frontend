@@ -1,24 +1,21 @@
-import axios from "axios";
+import axiosConfig from "../services/axiosConfig";
 
 import actionCreators from "./actionCreators";
 
 import setAuthToken from "../utils/setAuthToken";
-import setAxiosHeders from "../services/axiosHTTP";
 
 import { ILogin, IRegister, CreatorReturn } from "../helpers/interfaces";
 import { Dispatch } from "react";
 
-setAxiosHeders();
 
 export const loadUser = () => async (
   dispatch: Dispatch<CreatorReturn>
 ): Promise<void> => {
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
-  }
-
   try {
-    const res = await axios.get("/api/auth/user");
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
+    const res = await axiosConfig.get("/api/auth/user");
 
     dispatch(actionCreators.loadUserSuccess(res.data));
   } catch (error) {
@@ -40,11 +37,13 @@ export const login = ({ email, password }: ILogin) => async (
   dispatch: Dispatch<CreatorReturn>
 ) => {
   const body = JSON.stringify({ email, password });
-  
-  try {
-    const res = await axios.post("/api/auth/login", body);
 
+  try {
+    const res = await axiosConfig.post("/api/auth/login", body);
+    console.log(res.data.token);
+    
     localStorage.setItem("token", res.data.token);
+    setAuthToken(res.data.token);
 
     dispatch(actionCreators.loginSuccess(res.data.token));
   } catch (error) {
@@ -70,9 +69,10 @@ export const register = ({ email, password, username }: IRegister) => async (
   const body = JSON.stringify({ email, password, username });
 
   try {
-    const res = await axios.post("/api/auth/register", body);
+    const res = await axiosConfig.post("/api/auth/register", body);
 
     localStorage.setItem("token", res.data.token);
+    setAuthToken(res.data.token);
 
     dispatch(actionCreators.registerSuccess(res.data.token));
   } catch (error) {

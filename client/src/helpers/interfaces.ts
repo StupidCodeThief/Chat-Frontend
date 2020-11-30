@@ -63,3 +63,9 @@ export interface PrevMessage {
   username: string;
   date: Date;
 }
+
+export interface OnlineUser {
+  user_id: number;
+  username: string;
+}
+

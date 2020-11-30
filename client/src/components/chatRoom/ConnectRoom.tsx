@@ -40,8 +40,8 @@ const ConnectRoom: React.FC<ConnectRoomProps> = ({
 
   const onReset = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("EXIT:ROOM");
     onExitRoom();
+    socket.emit("EXIT:ROOM");
     setRoomData({ ...roomData, roomId: "", password: "" });
   };
 
