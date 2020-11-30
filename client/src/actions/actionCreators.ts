@@ -1,6 +1,6 @@
 import { types } from "./types";
 
-import {IUser, CreatorReturn} from "../helpers/interfaces"
+import { IUser, CreatorReturn, IMessage } from "../helpers/interfaces";
 
 function loginSuccess(token: string): CreatorReturn {
   return {

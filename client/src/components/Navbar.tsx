@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(getIsAuthenticated());
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   const onClick = (): void => {
     dispatch(logout());
@@ -44,11 +44,11 @@ const Navbar: React.FC = () => {
           </Typography>
           {isAuthenticated ? (
             <>
-              <Link to="/">
+              {/* <Link to="/">
                 <Button variant="contained" className={"button-margins"}>
                   Connect to room
                 </Button>
-              </Link>
+              </Link> */}
               <Link to="/">
                 <Button
                   variant="contained"
@@ -63,7 +63,6 @@ const Navbar: React.FC = () => {
             <Link to="/login">
               <Button
                 variant="contained"
-                color="primary"
                 className={"button-margins"}
               >
                 Login
