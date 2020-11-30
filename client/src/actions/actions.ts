@@ -40,7 +40,8 @@ export const login = ({ email, password }: ILogin) => async (
 
   try {
     const res = await axiosConfig.post("/api/auth/login", body);
-
+    console.log(res.data.token);
+    
     localStorage.setItem("token", res.data.token);
     setAuthToken(res.data.token);
 
