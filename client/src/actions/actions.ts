@@ -7,13 +7,12 @@ import setAuthToken from "../utils/setAuthToken";
 import { ILogin, IRegister, CreatorReturn } from "../helpers/interfaces";
 import { Dispatch } from "react";
 
-
 export const loadUser = () => async (
   dispatch: Dispatch<CreatorReturn>
 ): Promise<void> => {
   try {
     if (localStorage.token) {
-      setAuthToken(localStorage.token)
+      setAuthToken(localStorage.token);
     }
     const res = await axiosConfig.get("/api/auth/user");
 
@@ -40,8 +39,7 @@ export const login = ({ email, password }: ILogin) => async (
 
   try {
     const res = await axiosConfig.post("/api/auth/login", body);
-    console.log(res.data.token);
-    
+
     localStorage.setItem("token", res.data.token);
     setAuthToken(res.data.token);
 

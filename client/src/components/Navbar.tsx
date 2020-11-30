@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -8,7 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import { logout } from "../actions/actions";
+import { logout, loadUser } from "../actions/actions";
 import { getIsAuthenticated } from "../selectors/authSelectors";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +27,12 @@ const Navbar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      dispatch(loadUser());
+    }
+  }, []);
+
   const isAuthenticated = useSelector(getIsAuthenticated);
 
   const onClick = (): void => {
@@ -44,11 +50,16 @@ const Navbar: React.FC = () => {
           </Typography>
           {isAuthenticated ? (
             <>
-              {/* <Link to="/">
+              <Link to="/messages">
                 <Button variant="contained" className={"button-margins"}>
-                  Connect to room
+                  Messages
                 </Button>
-              </Link> */}
+              </Link>
+              <Link to="/chat-room">
+                <Button variant="contained" className={"button-margins"}>
+                  Chat
+                </Button>
+              </Link>
               <Link to="/">
                 <Button
                   variant="contained"

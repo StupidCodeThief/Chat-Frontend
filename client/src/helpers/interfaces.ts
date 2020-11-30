@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface IUser {
   id: number;
   username: string;
@@ -69,3 +71,6 @@ export interface OnlineUser {
   username: string;
 }
 
+export interface PrivateRouteProps {
+  component: ReactNode;
+}
