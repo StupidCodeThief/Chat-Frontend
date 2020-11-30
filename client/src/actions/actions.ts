@@ -1,20 +1,20 @@
-// import axios from "axios";
 import axiosConfig from "../services/axiosConfig";
 
 import actionCreators from "./actionCreators";
 
 import setAuthToken from "../utils/setAuthToken";
-// import setAxiosHeders from "../services/axiosHTTP";
 
 import { ILogin, IRegister, CreatorReturn } from "../helpers/interfaces";
 import { Dispatch } from "react";
 
-// setAxiosHeders();
 
 export const loadUser = () => async (
   dispatch: Dispatch<CreatorReturn>
 ): Promise<void> => {
   try {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
     const res = await axiosConfig.get("/api/auth/user");
 
     dispatch(actionCreators.loadUserSuccess(res.data));
@@ -29,7 +29,7 @@ export const loadUser = () => async (
       });
     }
 
-    dispatch(actionCreators.authError());
+    // dispatch(actionCreators.authError());
   }
 };
 

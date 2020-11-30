@@ -1,7 +1,7 @@
-import axios from "axios";
+import axiosConfig from "../services/axiosConfig";
 
 const setAxiosHeders = (): void => {
-  axios.defaults.headers["Content-Type"] = "application/json";
+  axiosConfig.defaults.headers["Content-Type"] = "application/json";
 };
 
 export default setAxiosHeders;
