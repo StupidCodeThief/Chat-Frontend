@@ -9,7 +9,7 @@ import Chatroom from "./chatRoom/ChatRoom";
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(getIsAuthenticated());
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

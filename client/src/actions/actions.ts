@@ -29,7 +29,7 @@ export const loadUser = () => async (
       });
     }
 
-    // dispatch(actionCreators.authError());
+    dispatch(actionCreators.authError());
   }
 };
 

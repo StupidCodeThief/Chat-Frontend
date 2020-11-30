@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import socket from "../../utils/connectSocket";
+import socket from "../../services/connectSocket";
 import ConnectRoom from "./ConnectRoom";
 import { getUser } from "../../selectors/authSelectors";
 import { PrevMessage, OnlineUser } from "../../helpers/interfaces";
@@ -21,7 +21,7 @@ const Chatroom: React.FC = () => {
   const [messages, setMessages] = useState<Array<IMessage | PrevMessage>>([]);
   const [userInput, setUserInput] = useState<string>("");
   const [onlineUsers, setOnlineUsers] = useState<Array<OnlineUser>>([]);
-  const user = useSelector(getUser());
+  const user = useSelector(getUser);
 
   useEffect(() => {
     return () => {

@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector(getIsAuthenticated());
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   const onClick = (): void => {
     dispatch(logout());
