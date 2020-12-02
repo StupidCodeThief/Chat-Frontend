@@ -24,6 +24,15 @@ const Chatroom: React.FC = () => {
   const user = useSelector(getUser);
 
   useEffect(() => {
+    socket.connect();
+
+    socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
+      setMessages([...messages, ...prewMessage]);
+    });
+  
+    socket.on("ONLINE:NOW", (users: [OnlineUser]) => {
+      setOnlineUsers([...users]);
+    });
     return () => {
       socket.close();
     };
@@ -34,14 +43,6 @@ const Chatroom: React.FC = () => {
       ...messages,
       { username: data.username, text: data.text, date: new Date() },
     ]);
-  });
-
-  socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
-    setMessages([...messages, ...prewMessage]);
-  });
-
-  socket.on("ONLINE:NOW", (users: [OnlineUser]) => {
-    setOnlineUsers([...users]);
   });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

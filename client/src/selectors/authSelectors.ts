@@ -8,3 +8,5 @@ export const getIsLoading = (state: RootStateOrAny) => state.auth.loading;
 export const getUserName = (state: RootStateOrAny) => state.auth.user.username;
 
 export const getUser = (state: RootStateOrAny) => state.auth.user;
+
+export const getUsers = (state: RootStateOrAny) => state.users.users;

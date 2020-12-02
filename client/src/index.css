@@ -46,7 +46,8 @@ a {
   margin: 0 auto;
 }
 
-header .button-margins {
+header .button-margins,
+.chat-container .button-margins {
   margin-left: 10px;
 }
 
@@ -62,20 +63,44 @@ header .button-margins {
   margin-left: 10px;
 }
 
-.now-online {
+.now-online,
+.messages-list {
   border: 2px solid black;
   height: 50%;
   overflow: auto;
 }
 
-.now-online h3 {
+.now-online h3,
+.messages-list h3 {
   margin: 0;
   text-align: center;
 }
 
-.online-user {
+.messages-list {
+  width: 250px;
+  height: 500px;
+  padding-left: 10px;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.online-user, .users {
   margin: 5px 5px 5px 15px;
   font-weight: bold;
+}
+
+.users {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.users span {
+  margin-left: 5px;
 }
 
 .message-container {

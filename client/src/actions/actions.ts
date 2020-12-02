@@ -110,3 +110,25 @@ export const logout = () => async (dispatch: Dispatch<CreatorReturn>) => {
     dispatch(actionCreators.authError());
   }
 };
+
+export const loadUsers = () => async (
+  dispatch: Dispatch<CreatorReturn>
+): Promise<void> => {
+  try {
+    const res = await axiosConfig.get("/api/auth/users");
+
+    dispatch(actionCreators.loadUsersSuccess(res.data));
+  } catch (error) {
+    const errors: [] = error.response?.data?.errors || [
+      { message: "Server error" },
+    ];
+
+    if (errors) {
+      errors.forEach((error: any) => {
+        console.error(error);
+      });
+    }
+
+    dispatch(actionCreators.loadUsersError());
+  }
+};

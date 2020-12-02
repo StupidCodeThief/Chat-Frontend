@@ -24,6 +24,11 @@ export interface InitialState {
   user: null | IUser | undefined;
 }
 
+export interface InitialStateUsers {
+  loading: boolean | undefined;
+  users: [] | [IUser] | undefined;
+}
+
 export interface ITypes {
   [key: string]: string;
 }
@@ -54,6 +59,7 @@ export interface CreatorReturn {
     loading?: boolean | undefined;
     user?: null | IUser | undefined;
     messages?: [] | [IMessage] | undefined;
+    users?: [IUser] | [] | undefined;
   };
 }
 

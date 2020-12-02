@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
     if (localStorage.getItem("token")) {
       dispatch(loadUser());
     }
-  }, []);
+  }, [localStorage.getItem("token")]);
 
   const isAuthenticated = useSelector(getIsAuthenticated);
 
