@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosConfig from "../services/axiosConfig";
 
-const setAuthToken = (token: string): void => {
+const setAuthToken = (token: string | null): void => {
   if (token) {
-    axios.defaults.headers.common["auth-token"] = token;
+    axiosConfig.defaults.headers.common["auth-token"] = token;
   } else {
-      delete axios.defaults.headers.common["auth-token"]
+    delete axiosConfig.defaults.headers.common["auth-token"];
   }
 };
 
