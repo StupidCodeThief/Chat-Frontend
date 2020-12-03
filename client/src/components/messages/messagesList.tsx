@@ -13,6 +13,8 @@ interface IMessage {
   message_id?: number;
   recipient_id: number | undefined;
   sender_id: number;
+  sender_name: string | undefined;
+  recipient_name: string | undefined;
   text: string;
 }
 
@@ -40,13 +42,15 @@ const Messageslist: React.FC = () => {
     setUsersList([...users]);
 
     socket.on("MSG:LIST", (msg: [IMessage]) => {
-      console.log("MSG:LIST");
       setMessagesList([...msg]);
     });
 
     socket.on("PREW:MSG", (msg: [IMessage]) => {
-      console.log("PREW:MSG");
       setMessages([...msg]);
+    });
+
+    socket.on("new:message", () => {
+      socket.emit("get:messages", user.id);
     });
     return () => {
       socket.close();
@@ -57,11 +61,11 @@ const Messageslist: React.FC = () => {
     setUserList(!isUserList);
   };
 
-  const onClick = (recipient: IUser) => {
-    setRecipient(recipient);
+  const onClick = (recipient: number) => {
+    setRecipient(users.find((user: IUser) => user.id === recipient));
     socket.emit("get:correspondence", {
       sender_id: user.id,
-      recipient_id: recipient.id,
+      recipient_id: recipient,
     });
     setMessages([]);
   };
@@ -78,6 +82,8 @@ const Messageslist: React.FC = () => {
         {
           sender_id: user.id,
           recipient_id: recipient!.id,
+          sender_name: user.username,
+          recipient_name: recipient.username,
           text: userInput,
           date: new Date(),
         },
@@ -86,6 +92,8 @@ const Messageslist: React.FC = () => {
       socket.emit("private:message", {
         sender_id: user.id,
         recipient_id: recipient.id,
+        sender_name: user.username,
+        recipient_name: recipient.username,
         text: userInput,
         date: new Date(),
       });
@@ -93,7 +101,7 @@ const Messageslist: React.FC = () => {
       socket.emit("get:messages", user.id);
     }
   };
-  console.log("render");
+
   return (
     <section className={"chat-container"}>
       <div>
@@ -103,8 +111,8 @@ const Messageslist: React.FC = () => {
             {usersList.length > 0 &&
               usersList.map((user) => {
                 return (
-                  <>
-                    <div className={"users"} key={user.id}>
+                  <div key={user.id}>
+                    <div className={"users"}>
                       <Avatar></Avatar>
                       <span>{user.username}</span>
                     </div>
@@ -112,36 +120,36 @@ const Messageslist: React.FC = () => {
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={() => onClick(user)}
+                      onClick={() => onClick(user.id)}
                     >
                       Sent message
                     </Button>
-                  </>
+                  </div>
                 );
               })}
           </div>
         ) : (
           <div className={"messages-list"}>
-            <h3>Messages list:</h3>
+            <h3>Inbox messages:</h3>
             {messagesList.length > 0 &&
               messagesList.map((message) => {
                 return (
-                  <>
-                    <div className={"users"} key={message.message_id}>
+                  <div key={message.message_id}>
+                    <div className={"users"}>
                       <Avatar></Avatar>
                       <span>
-                        {message.sender_id}: {message.text}
+                        {message.sender_name}: {message.text}
                       </span>
                     </div>
                     <Button
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={() => onClick(user)}
+                      onClick={() => onClick(message.sender_id)}
                     >
                       Reply
                     </Button>
-                  </>
+                  </div>
                 );
               })}
           </div>
@@ -172,30 +180,26 @@ const Messageslist: React.FC = () => {
                 const formattedDate = new Date(
                   message.date
                 ).toLocaleString("ru-RU", { hour12: false });
-                return (
-                  <>
-                    {user.id === message.sender_id ? (
-                      <div
-                        className={"message"}
-                        key={message.message_id || formattedDate}
-                      >
-                        <span>
-                          <strong>{user.username}</strong>: {message.text}
-                        </span>
-                        <span className={"message-date"}>{formattedDate}</span>
-                      </div>
-                    ) : (
-                      <div
-                        className={"message inbox"}
-                        key={message.message_id || formattedDate}
-                      >
-                        <span>
-                          {message.text}: <strong>{recipient?.username}</strong>
-                        </span>
-                        <span className={"message-date"}>{formattedDate}</span>
-                      </div>
-                    )}
-                  </>
+                return user.id === message.sender_id ? (
+                  <div
+                    className={"message"}
+                    key={message.message_id || formattedDate}
+                  >
+                    <span>
+                      <strong>{message.sender_name}</strong>: {message.text}
+                    </span>
+                    <span className={"message-date"}>{formattedDate}</span>
+                  </div>
+                ) : (
+                  <div
+                    className={"message inbox"}
+                    key={message.message_id || formattedDate}
+                  >
+                    <span>
+                      {message.text}: <strong>{message.recipient_name}</strong>
+                    </span>
+                    <span className={"message-date"}>{formattedDate}</span>
+                  </div>
                 );
               })
             : null}
