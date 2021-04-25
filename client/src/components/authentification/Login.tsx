@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const isAuthenticated = useSelector(getIsAuthenticated());
+  const isAuthenticated = useSelector(getIsAuthenticated);
 
   const [loginData, setLoginData] = useState({
     email: "",

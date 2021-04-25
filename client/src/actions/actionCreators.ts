@@ -1,6 +1,6 @@
 import { types } from "./types";
 
-import { IUser, CreatorReturn, IMessage } from "../helpers/interfaces";
+import { IUser, CreatorReturn } from "../helpers/interfaces";
 
 function loginSuccess(token: string): CreatorReturn {
   return {
@@ -20,6 +20,26 @@ function loadUserSuccess(user: IUser): CreatorReturn {
       isAuthenticated: true,
       loading: false,
       user: user,
+    },
+  };
+}
+
+function loadUsersSuccess(users: [IUser]): CreatorReturn {
+  return {
+    type: types.USERS_LOADED,
+    payload: {
+      loading: false,
+      users: users,
+    },
+  };
+}
+
+function loadUsersError(): CreatorReturn {
+  return {
+    type: types.LOAD_USERS_ERROR,
+    payload: {
+      loading: false,
+      users: [],
     },
   };
 }
@@ -65,4 +85,6 @@ export default {
   loadUserSuccess,
   logoutSuccess,
   authError,
+  loadUsersSuccess,
+  loadUsersError
 };

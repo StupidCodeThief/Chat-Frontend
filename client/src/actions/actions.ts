@@ -1,20 +1,19 @@
-// import axios from "axios";
 import axiosConfig from "../services/axiosConfig";
 
 import actionCreators from "./actionCreators";
 
 import setAuthToken from "../utils/setAuthToken";
-// import setAxiosHeders from "../services/axiosHTTP";
 
 import { ILogin, IRegister, CreatorReturn } from "../helpers/interfaces";
 import { Dispatch } from "react";
-
-// setAxiosHeders();
 
 export const loadUser = () => async (
   dispatch: Dispatch<CreatorReturn>
 ): Promise<void> => {
   try {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
     const res = await axiosConfig.get("/api/auth/user");
 
     dispatch(actionCreators.loadUserSuccess(res.data));
@@ -40,8 +39,7 @@ export const login = ({ email, password }: ILogin) => async (
 
   try {
     const res = await axiosConfig.post("/api/auth/login", body);
-    console.log(res.data.token);
-    
+
     localStorage.setItem("token", res.data.token);
     setAuthToken(res.data.token);
 
@@ -110,5 +108,27 @@ export const logout = () => async (dispatch: Dispatch<CreatorReturn>) => {
     localStorage.removeItem("token");
 
     dispatch(actionCreators.authError());
+  }
+};
+
+export const loadUsers = () => async (
+  dispatch: Dispatch<CreatorReturn>
+): Promise<void> => {
+  try {
+    const res = await axiosConfig.get("/api/auth/users");
+
+    dispatch(actionCreators.loadUsersSuccess(res.data));
+  } catch (error) {
+    const errors: [] = error.response?.data?.errors || [
+      { message: "Server error" },
+    ];
+
+    if (errors) {
+      errors.forEach((error: any) => {
+        console.error(error);
+      });
+    }
+
+    dispatch(actionCreators.loadUsersError());
   }
 };

@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import socket from "../../utils/connectSocket";
+import socket from "../../services/connectSocket";
 import ConnectRoom from "./ConnectRoom";
 import { getUser } from "../../selectors/authSelectors";
-import { PrevMessage } from "../../helpers/interfaces";
+import { PrevMessage, OnlineUser } from "../../helpers/interfaces";
 
 interface IMessage {
   user?: string | undefined;
@@ -20,9 +20,19 @@ interface IMessage {
 const Chatroom: React.FC = () => {
   const [messages, setMessages] = useState<Array<IMessage | PrevMessage>>([]);
   const [userInput, setUserInput] = useState<string>("");
-  const user = useSelector(getUser());
+  const [onlineUsers, setOnlineUsers] = useState<Array<OnlineUser>>([]);
+  const user = useSelector(getUser);
 
   useEffect(() => {
+    socket.connect();
+
+    socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
+      setMessages([...messages, ...prewMessage]);
+    });
+  
+    socket.on("ONLINE:NOW", (users: [OnlineUser]) => {
+      setOnlineUsers([...users]);
+    });
     return () => {
       socket.close();
     };
@@ -35,9 +45,6 @@ const Chatroom: React.FC = () => {
     ]);
   });
 
-  socket.on("PREW:MSG", (prewMessage: [PrevMessage]) => {
-    setMessages([...messages, ...prewMessage]);
-  });
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value);
   };
@@ -56,11 +63,25 @@ const Chatroom: React.FC = () => {
 
   const onExitRoom = () => {
     setMessages([]);
+    setOnlineUsers([]);
   };
 
   return (
     <section className={"chat-container"}>
-      <ConnectRoom socket={socket} user={user} onExitRoom={onExitRoom} />
+      <div>
+        <ConnectRoom socket={socket} user={user} onExitRoom={onExitRoom} />
+        <div className={"now-online"}>
+          <h3>Now in chat: {onlineUsers.length}</h3>
+          {onlineUsers.length > 0 &&
+            onlineUsers.map((user) => {
+              return (
+                <div className={"online-user"} key={user.user_id}>
+                  {user.username}
+                </div>
+              );
+            })}
+        </div>
+      </div>
       <div className={"chat"}>
         <div className={"message-container"}>
           {messages.length
@@ -73,17 +94,17 @@ const Chatroom: React.FC = () => {
                     {user.username === message.username ? (
                       <div
                         className={"message"}
-                        key={message.message_id || Date.now()}
+                        key={message.message_id || formattedDate}
                       >
                         <span>
-                        <strong>{message.username}</strong>: {message.text}
+                          <strong>{message.username}</strong>: {message.text}
                         </span>
                         <span className={"message-date"}>{formattedDate}</span>
                       </div>
                     ) : (
                       <div
                         className={"message inbox"}
-                        key={message.message_id || Date.now()}
+                        key={message.message_id || formattedDate}
                       >
                         <span>
                           {message.text}: <strong>{message.username}</strong>

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface IUser {
   id: number;
   username: string;
@@ -20,6 +22,11 @@ export interface InitialState {
   isAuthenticated: boolean | undefined;
   loading: boolean | undefined;
   user: null | IUser | undefined;
+}
+
+export interface InitialStateUsers {
+  loading: boolean | undefined;
+  users: [] | [IUser] | undefined;
 }
 
 export interface ITypes {
@@ -52,6 +59,7 @@ export interface CreatorReturn {
     loading?: boolean | undefined;
     user?: null | IUser | undefined;
     messages?: [] | [IMessage] | undefined;
+    users?: [IUser] | [] | undefined;
   };
 }
 
@@ -62,4 +70,13 @@ export interface PrevMessage {
   user: number;
   username: string;
   date: Date;
+}
+
+export interface OnlineUser {
+  user_id: number;
+  username: string;
+}
+
+export interface PrivateRouteProps {
+  component: ReactNode;
 }
